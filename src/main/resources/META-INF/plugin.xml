@@ -12,13 +12,11 @@
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <!-- Add your extensions here -->
+        <toolWindow id="Sample Panel" secondary="true" icon="AllIcons.Toolwindows.WebToolWindow" anchor="right"
+                    factoryClass="SkyProPanel"/>
     </extensions>
 
     <actions>
         <!-- Add your actions here -->
-        <action id="SumAction" class="SumAction" text="Sum Action" description="Return sum of value1 and value2">
-            <keyboard-shortcut keymap="$default" first-keystroke="ctrl BACK_SLASH" second-keystroke="ctrl S"/>
-        </action>
     </actions>
 </idea-plugin>
