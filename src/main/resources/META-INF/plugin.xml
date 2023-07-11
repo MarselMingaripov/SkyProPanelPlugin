@@ -1,0 +1,21 @@
+<idea-plugin>
+    <id>ru.min.TetsPluginSkyProPanel</id>
+    <name>SkyPro Panel</name>
+    <vendor email="bard1812@gmail.com" url="http://www.bard1812.com">bard1812</vendor>
+
+    <description><![CDATA[
+    Special super plugin for SkyPro Special super plugin for SkyPro
+    ]]></description>
+
+    <!-- please see https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html
+         on how to target different products -->
+    <depends>com.intellij.modules.platform</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+    </extensions>
+
+    <actions>
+        <!-- Add your actions here -->
+    </actions>
+</idea-plugin>
