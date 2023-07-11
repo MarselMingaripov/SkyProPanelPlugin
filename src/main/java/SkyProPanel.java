@@ -2,6 +2,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
+import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.components.JBTextArea;
 import com.intellij.ui.components.JBTextField;
 import com.intellij.ui.content.Content;
@@ -28,13 +29,14 @@ public class SkyProPanel implements ToolWindowFactory{
         private final JBTextField value1Field = new JBTextField();
         private final JBTextField value2Field = new JBTextField();
         private final JBTextArea resultLabel = new JBTextArea();
+        private final JBScrollPane scrollPane = new JBScrollPane(resultLabel);
         private final JButton getValueButton = new JButton("get value");
         private final JButton getTreeButton = new JButton("get tree");
         private final JButton getSocketButton = new JButton("get socket");
 
 
         public PanelContent() {
-            skyProPanel.setLayout(new BorderLayout(0, 20));
+            skyProPanel.setLayout(new GridLayout(0, 1));
             skyProPanel.setBorder(BorderFactory.createEmptyBorder(40, 0, 0, 0));
             skyProPanel.add(createSkyProPanel(), BorderLayout.PAGE_START);
         }
@@ -51,7 +53,9 @@ public class SkyProPanel implements ToolWindowFactory{
             myPanel.add(value2Field);
 
             myPanel.add(new JLabel("Result: "));
-            myPanel.add(resultLabel);
+            //myPanel.add(resultLabel);
+            myPanel.add(scrollPane);
+            scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
             resultLabel.setEditable(false);
 
             myPanel.add(getValueButton);
@@ -59,17 +63,21 @@ public class SkyProPanel implements ToolWindowFactory{
             myPanel.add(getSocketButton);
 
             getValueButton.addActionListener(e -> {
-                int value1 = Integer.parseInt(value1Field.getText());
-                int value2 = Integer.parseInt(value2Field.getText());
-                int sum = value1 + value2;
-                resultLabel.setText(value1Field.getText() + " + " + value2Field.getText() + " = " + sum);
+                if (isNumeric(value1Field.getText()) && isNumeric(value2Field.getText())) {
+                    int value1 = Integer.parseInt(value1Field.getText());
+                    int value2 = Integer.parseInt(value2Field.getText());
+                    int sum = value1 + value2;
+                    resultLabel.setText(value1Field.getText() + " + " + value2Field.getText() + " = " + sum);
+                } else {
+                    resultLabel.setText("Please, try again. We need some digits...");
+                }
 
             });
 
             getTreeButton.addActionListener(e -> {
                 ProjectsDirUtil projectsDirUtil = new ProjectsDirUtil();
-                Messages.showInfoMessage(projectsDirUtil.getProjectTreeString(), "Project Properties");
-                //resultLabel.setText(projectsDirUtil.getProjectTreeString());
+                //Messages.showInfoMessage(projectsDirUtil.getProjectTreeString(), "Project Properties");
+                resultLabel.setText(projectsDirUtil.getProjectTreeString());
             });
 
             getSocketButton.addActionListener(e -> {
@@ -82,6 +90,15 @@ public class SkyProPanel implements ToolWindowFactory{
 
         public JPanel getContentPanel() {
             return skyProPanel;
+        }
+
+        private static boolean isNumeric(String str) {
+            try {
+                Integer.parseInt(str);
+                return true;
+            } catch (NumberFormatException e) {
+                return false;
+            }
         }
     }
 }
