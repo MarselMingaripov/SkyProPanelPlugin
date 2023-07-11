@@ -11,13 +11,14 @@ intellij {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_11
 }
 
 repositories {
     mavenCentral()
 }
 
+/*
 tasks {
     buildSearchableOptions {
         enabled = false
@@ -28,4 +29,4 @@ tasks {
         sinceBuild.set("222")
         untilBuild.set("231.*")
     }
-}
+}*/
