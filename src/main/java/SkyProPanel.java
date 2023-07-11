@@ -1,12 +1,7 @@
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.project.ProjectManager;
-import com.intellij.openapi.roots.ModuleRootManager;
-import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.ui.Messages;
-import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
-import com.intellij.psi.*;
 import com.intellij.ui.components.JBTextArea;
 import com.intellij.ui.components.JBTextField;
 import com.intellij.ui.content.Content;
@@ -15,16 +10,13 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
-import java.util.Arrays;
-import java.util.stream.Collectors;
 
 public class SkyProPanel implements ToolWindowFactory{
 
     @Override
     public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
 
-        PanelContent panelContent = new PanelContent(project);
+        PanelContent panelContent = new PanelContent();
         Content content = ContentFactory.SERVICE.getInstance().createContent(panelContent.getContentPanel(), "", false);
         toolWindow.getContentManager().addContent(content);
     }
@@ -37,35 +29,36 @@ public class SkyProPanel implements ToolWindowFactory{
         private final JBTextField value2Field = new JBTextField();
         private final JBTextArea resultLabel = new JBTextArea();
         private final JButton getValueButton = new JButton("get value");
-        private final JButton getTree = new JButton("get tree");
-        private final JButton getSocket = new JButton("get socket");
-        private final Project project;
+        private final JButton getTreeButton = new JButton("get tree");
+        private final JButton getSocketButton = new JButton("get socket");
 
 
-        public PanelContent(Project project) {
+        public PanelContent() {
             skyProPanel.setLayout(new BorderLayout(0, 20));
             skyProPanel.setBorder(BorderFactory.createEmptyBorder(40, 0, 0, 0));
             skyProPanel.add(createSkyProPanel(), BorderLayout.PAGE_START);
-            this.project = project;
         }
 
         @NotNull
         private JPanel createSkyProPanel() {
             JPanel myPanel = new JPanel();
             myPanel.setLayout(new GridLayout(0, 1));
+
             myPanel.add(new JLabel("Value 1:"));
             myPanel.add(value1Field);
+
             myPanel.add(new JLabel("Value 2:"));
             myPanel.add(value2Field);
+
             myPanel.add(new JLabel("Result: "));
             myPanel.add(resultLabel);
             resultLabel.setEditable(false);
-            myPanel.add(getValueButton);
-            myPanel.add(getTree);
-            myPanel.add(getSocket);
-            getValueButton.addActionListener(e ->
 
-            {
+            myPanel.add(getValueButton);
+            myPanel.add(getTreeButton);
+            myPanel.add(getSocketButton);
+
+            getValueButton.addActionListener(e -> {
                 int value1 = Integer.parseInt(value1Field.getText());
                 int value2 = Integer.parseInt(value2Field.getText());
                 int sum = value1 + value2;
@@ -73,9 +66,15 @@ public class SkyProPanel implements ToolWindowFactory{
 
             });
 
-            getTree.addActionListener(e -> {
+            getTreeButton.addActionListener(e -> {
                 ProjectsDirUtil projectsDirUtil = new ProjectsDirUtil();
                 Messages.showInfoMessage(projectsDirUtil.getProjectTreeString(), "Project Properties");
+                //resultLabel.setText(projectsDirUtil.getProjectTreeString());
+            });
+
+            getSocketButton.addActionListener(e -> {
+                ProjectConnectionUtil projectConnectionUtil = new ProjectConnectionUtil();
+                projectConnectionUtil.createConnection(resultLabel);
             });
 
             return myPanel;

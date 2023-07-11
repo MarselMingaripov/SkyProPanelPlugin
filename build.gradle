@@ -18,6 +18,14 @@ repositories {
     mavenCentral()
 }
 
+dependencies {
+    // https://mvnrepository.com/artifact/io.socket/socket.io-client
+    implementation group: 'io.socket', name: 'socket.io-client', version: '2.1.0'
+
+}
+
+
+
 /*
 tasks {
     buildSearchableOptions {
