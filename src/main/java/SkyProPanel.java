@@ -11,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
+import java.net.URISyntaxException;
 
 public class SkyProPanel implements ToolWindowFactory{
 
@@ -18,7 +19,7 @@ public class SkyProPanel implements ToolWindowFactory{
     public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
 
         PanelContent panelContent = new PanelContent();
-        Content content = ContentFactory.SERVICE.getInstance().createContent(panelContent.getContentPanel(), "", false);
+        Content content = ContentFactory.getInstance().createContent(panelContent.getContentPanel(), "", false);
         toolWindow.getContentManager().addContent(content);
     }
 
@@ -81,7 +82,8 @@ public class SkyProPanel implements ToolWindowFactory{
             });
 
             getSocketButton.addActionListener(e -> {
-                ProjectConnectionUtil projectConnectionUtil = new ProjectConnectionUtil();
+                ProjectConnectionUtil projectConnectionUtil = null;
+                projectConnectionUtil = new ProjectConnectionUtil();
                 projectConnectionUtil.createConnection(resultLabel);
             });
 
