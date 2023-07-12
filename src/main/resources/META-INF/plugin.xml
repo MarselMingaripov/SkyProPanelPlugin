@@ -7,16 +7,11 @@
     Special super plugin for SkyPro Special super plugin for SkyPro
     ]]></description>
 
-    <!-- please see https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html
-         on how to target different products -->
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow id="Sample Panel" secondary="true" icon="AllIcons.Toolwindows.WebToolWindow" anchor="right"
+        <toolWindow id="SkyPro Panel" secondary="true" icon="AllIcons.Toolwindows.WebToolWindow" anchor="right"
                     factoryClass="SkyProPanel"/>
-    </extensions>
 
-    <actions>
-        <!-- Add your actions here -->
-    </actions>
+    </extensions>
 </idea-plugin>
