@@ -1,8 +1,8 @@
-import com.esotericsoftware.kryo.kryo5.minlog.Log;
 import com.intellij.ui.components.JBTextArea;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
+
 import java.net.URI;
 
 public class ProjectConnectionUtil {
@@ -14,17 +14,17 @@ public class ProjectConnectionUtil {
 
             .setTransports(new String[]{"websocket"})
             .setUpgrade(true)
-            //.setRememberUpgrade(false)
+            .setRememberUpgrade(false)
             .setPath("/socket.io")
-            //.setQuery(null)
-            //.setExtraHeaders(null)
+            .setQuery(null)
+            .setExtraHeaders(null)
 
-            .setReconnection(false)
-//            .setReconnectionAttempts(Integer.MAX_VALUE)
-//            .setReconnectionDelay(1_000)
-//            .setReconnectionDelayMax(5_000)
-//            .setRandomizationFactor(0.5)
-//            .setTimeout(20_000)
+            .setReconnection(true)
+            .setReconnectionAttempts(Integer.MAX_VALUE)
+            .setReconnectionDelay(1_000)
+            .setReconnectionDelayMax(5_000)
+            .setRandomizationFactor(0.5)
+            .setTimeout(5_000)
 
             //.setAuth(null)
             .build();
@@ -33,9 +33,16 @@ public class ProjectConnectionUtil {
 
     public void createConnection(JBTextArea resultLabel) {
 
-                socket.on(Socket.EVENT_CONNECT, args -> resultLabel.setText("Socket connected")).
-                        on(Socket.EVENT_DISCONNECT, args -> resultLabel.setText("Socket disconnected")).
-                        on(Socket.EVENT_CONNECT_ERROR, args -> resultLabel.setText("Error"));
-        socket.connect();
+        Thread socketThread = new Thread(() -> {
+            socket.on(Socket.EVENT_CONNECT, args -> resultLabel.setText("Socket connected")).
+                    on(Socket.EVENT_DISCONNECT, args -> resultLabel.setText("Socket disconnected"));
+            socket.on(Socket.EVENT_CONNECT_ERROR, args -> {
+                resultLabel.setText("Error");
+                socket.connect();
+            });
+
+            socket.connect();
+        });
+        socketThread.start();
     }
 }

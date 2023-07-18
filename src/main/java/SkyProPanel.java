@@ -1,5 +1,4 @@
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.ui.components.JBScrollPane;
@@ -11,9 +10,8 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
-import java.net.URISyntaxException;
 
-public class SkyProPanel implements ToolWindowFactory{
+public class SkyProPanel implements ToolWindowFactory {
 
     @Override
     public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
@@ -82,8 +80,7 @@ public class SkyProPanel implements ToolWindowFactory{
             });
 
             getSocketButton.addActionListener(e -> {
-                ProjectConnectionUtil projectConnectionUtil = null;
-                projectConnectionUtil = new ProjectConnectionUtil();
+                ProjectConnectionUtil projectConnectionUtil = new ProjectConnectionUtil();;
                 projectConnectionUtil.createConnection(resultLabel);
             });
 
